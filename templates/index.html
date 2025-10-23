@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock title %}
+{% block body %}
+    
+    
+    <div class="container my-3">
+        <h2> Add a ToDo</h2>
+        <form action="/" method="POST">
+  <div class="mb-3">
+    <label for="title" class="form-label">ToDo Title</label>
+    <input type="text" class="form-control" name="title" id="title" aria-describedby="emailHelp">
+  </div>
+  <div class="mb-3">
+    <label for="desc" class="form-label">ToDo Description</label>
+    <input type="text" class="form-control" name="desc" id="desc">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+    </div>
+    <div class="container my-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">My ToDos</h2>
+            <form class="d-flex" role="search" style="width: 400px;">
+                <input
+                  class="form-control me-2 bg-dark text-light border-secondary"
+                  type="search"
+                  placeholder="Search ToDos"
+                  aria-label="Search"
+                  id="searchInput"
+                  onkeyup="searchTodos()"
+                />
+            </form>
+        </div>
+        
+    {% if allTodo|length==0 %}
+
+        <div class="alert alert-dark" role="alert">
+  No Todos Found! Add your first Todo now.
+</div>
+          
+        {% else %}
+        <table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th scope="col">SNo</th>
+      <th scope="col">Title</th>
+      <th scope="col">Description</th>
+      <th scope="col">Time</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+          
+    {% for todo in allTodo %}
+  
+
+      <tr>
+      <th scope="row">{{loop.index}}</th>
+      <td>{{todo.title}}</td>
+      <td>{{todo.desc}}</td>
+      <td>{{todo.date_created}}</td>
+      <td>
+        <a href="/update/{{todo.sno}}"><button type="button" class="btn btn-outline-success btn-sm mx-1">Update</button></a>
+        <a href="/delete/{{todo.sno}}"><button type="button" class="btn btn-outline-danger btn-sm mx-1">Delete</button></a>
+      </td>
+    </tr>
+    {% endfor %}
+     </tbody>
+</table>
+    {% endif %}
+
+    
+    
+ 
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+        function searchTodos() {
+            // Get the search input value
+            let input = document.getElementById('searchInput');
+            let filter = input.value.toLowerCase();
+            let table = document.querySelector('.table');
+            let tr = table.getElementsByTagName('tr');
+
+            // Loop through all table rows (except header)
+            for (let i = 1; i < tr.length; i++) {
+                let tdTitle = tr[i].getElementsByTagName('td')[0];
+                let tdDesc = tr[i].getElementsByTagName('td')[1];
+                
+                if (tdTitle || tdDesc) {
+                    let titleText = tdTitle.textContent || tdTitle.innerText;
+                    let descText = tdDesc.textContent || tdDesc.innerText;
+                    
+                    // Check if either title or description matches the search
+                    if (titleText.toLowerCase().indexOf(filter) > -1 || 
+                        descText.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+    -->
+{% endblock body %}
