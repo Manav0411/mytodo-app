@@ -111,6 +111,9 @@ FLASK_APP/
 | desc         | String   | Todo description (max 500)     |
 | date_created | DateTime | Timestamp (auto-generated)     |
 
+## 🎨 Screenshot
+
+![MyToDo App](screenshot.png)
 
 ## 🔧 Configuration
 
